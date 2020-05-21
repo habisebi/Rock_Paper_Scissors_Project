@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JANKEN SIMULATOR 2020</title>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+<div id="container">
+    <h1 style="text-align: center;">JANKEN SIMULATOR 2020</h1>
+    <h1 style="text-align: center;">JAVASCRIPTでじゃんけん</h1>
+    <h2 style="text-align: center;">Select one:</h2>
+    <h2 style="text-align: center;">三つから一つを選んでください。</h2>
+    <div style="display: flex; margin: auto; width: 750px; justify-content: space-around;">
+        <img style= "width: 10%;" src="https://www.silhouette-illust.com/wp-content/uploads/2016/11/17390-300x300.jpg">
+        <img style= "width: 10%;" src="https://www.silhouette-illust.com/wp-content/uploads/2016/11/17431-300x300.jpg">
+        <img style= "width: 10%;" src="https://www.silhouette-illust.com/wp-content/uploads/2016/11/17430-300x300.jpg">
+    </div>
+    <div style="display: flex; margin: auto; width: 750px; justify-content: space-around;">
+        <button style="width: 100px;" id="rockBtn" class="button"><p>ROCK</p><p>グー</p></button>
+        <button style="width: 100px;" id="paperBtn" class="button"><p>PAPER</p><p>パー</p></button>
+        <button style="width: 100px;" id="scissorsBtn" class="button"><p>SCISSORS</p><p>チョキ</p></button>
+    </div>
+    <div style="text-align: center; margin: auto; width: 750px;" id="results-screen">
+        <div style="text-align: center; padding: 10px auto;" id="results-info"></div>
+    </div>
+    <div style="text-align: center;" id="score-counter"></div>       
+</div>
+</body>
+<script>
+// DOM MANIPULATION
+const container = document.getElementById('container');
+
+const resultsScreen = document.getElementById('results-screen');
+resultsScreen.style.border = '1px solid black';
+resultsScreen.style.backgroundColor = 'green';
+container.appendChild(resultsScreen);
+
+
+const resultsInfo = document.getElementById('results-info');
+resultsScreen.appendChild(resultsInfo);
+
+
+const scoreCounter = document.getElementById('score-counter');
+resultsScreen.appendChild(scoreCounter);
+
+// END DOM MANIPULATION
+
+//BUTTONS
+
+const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        switch (button.id) {
+            case 'rockBtn': 
+                playerSelection = 'rock';
+                break;
+            case 'paperBtn':
+                playerSelection = 'paper';
+                break;
+            case 'scissorsBtn':
+                playerSelection = 'scissors';
+                break;
+        } 
+        return playRound(playerSelection);
+    })
+    });
+
+//END BUTTONS
+
+// MAIN CODE
+
+let result;
+let playerScore = 0;
+let computerScore = 0;
+
+function computerPlay() {
+    const selections = ['rock', 'paper', 'scissors'];
+    return selections[Math.floor(Math.random()*selections.length)]
+}
+
+function playRound(playerSelection) {  
+    computerSelection = computerPlay();
+    if ((playerSelection === 'rock' && computerSelection === 'scissors') 
+    || (playerSelection === 'scissors' && computerSelection === 'paper') 
+    || (playerSelection === 'paper'  && computerSelection === 'rock')) {
+        result = 'win';
+    } else if (playerSelection === computerSelection) {
+    result = 'tie';
+    } else {
+    result = 'lose';
+    }
+    printResults(result);
+}
+
+function printResults() {
+    
+    if (result === 'win') {
+    playerScore++;
+    resultsInfo.textContent = `You win（勝ち）! ${playerSelection} beats ${computerSelection}`;
+    } else if (result === 'lose') {
+    computerScore++;
+    resultsInfo.textContent = `You lose（負け）! ${computerSelection} beats ${playerSelection}`;
+    } else {
+    resultsInfo.textContent = `It's a tie! （引き分け）`;
+    } scoreCounter.textContent = `Wins (勝ち): ${playerScore}, Losses (負け): ${computerScore}`;
+    return showWinner(playerScore, computerScore);
+}
+
+function showWinner(playerScore, computerScore) {
+
+    if (playerScore === 5) {
+        alert("VICTORY 勝利");
+    } else if (computerScore === 5) {
+        alert("DEFEAT 敗北")
+    }
+}
+
+// END MAIN CODE
+</script>
+</html>
